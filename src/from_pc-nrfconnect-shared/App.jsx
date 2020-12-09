@@ -35,22 +35,28 @@
  */
 
 import React from 'react';
-import { App } from './from_pc-nrfconnect-shared';
-import Scope from './components/Scope/Scope';
-import DataLogger from './components/DataLogger/DataLogger';
-import SidePanel from './components/SidePanel/SidePanel';
-import DeviceSelector from './components/DeviceSelector';
-import reducers from './reducers';
-import './index.scss';
+import { useSelector } from 'react-redux';
+import { array, arrayOf } from 'prop-types';
+import { App as OriginalApp } from 'pc-nrfconnect-shared';
 
-export default () => (
-    <App
-        appReducer={reducers}
-        deviceSelect={<DeviceSelector />}
-        sidePanel={<SidePanel />}
-        panes={[
-            ['Scope', Scope],
-            ['Data Logger', DataLogger],
-        ]}
-    />
+const ActivationAware = (Pane, paneNumber) => props => {
+    const active =
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useSelector(state => state.appLayout.currentPane) === paneNumber;
+
+    return <Pane {...props} active={active} />;
+};
+
+const wrapWithActivationAwareness = ([paneName, Pane], index) => {
+    return [paneName, ActivationAware(Pane, index)];
+};
+
+const App = ({ panes, ...props }) => (
+    <OriginalApp {...props} panes={panes.map(wrapWithActivationAwareness)} />
 );
+
+App.propTypes = {
+    panes: arrayOf(array.isRequired).isRequired,
+};
+
+export default App;

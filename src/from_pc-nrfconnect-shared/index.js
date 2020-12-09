@@ -38,6 +38,8 @@
 // launcher being used that provides shared v4.16.0
 import './shared.scss'; // eslint-disable-line import/first
 
+export { default as App } from './App';
+
 export { default as Slider } from './Slider/Slider';
 export { default as Toggle } from './Toggle/Toggle';
 

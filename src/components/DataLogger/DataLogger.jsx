@@ -36,17 +36,21 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { bool } from 'prop-types';
 import Chart from '../Chart/Chart';
 
 import { samplingStop, setupOptions } from '../../actions/deviceActions';
-import { isDataLoggerPane } from '../../utils/panes';
 
-export default () => {
+const DataLogger = ({ active }) => {
     const dispatch = useDispatch();
-    const active = isDataLoggerPane();
     useEffect(() => {
         dispatch(setupOptions());
         return active ? () => dispatch(samplingStop()) : undefined;
     }, [active, dispatch]);
     return active && <Chart digitalChannelsEnabled />;
 };
+DataLogger.propTypes = {
+    active: bool.isRequired,
+};
+
+export default DataLogger;

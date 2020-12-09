@@ -35,18 +35,22 @@
  */
 
 import React, { useEffect } from 'react';
+import { bool } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import Chart from '../Chart/Chart';
 
 import { setupOptions, triggerStop } from '../../actions/deviceActions';
-import { isScopePane } from '../../utils/panes';
 
-export default () => {
+const Scope = ({ active }) => {
     const dispatch = useDispatch();
-    const active = isScopePane();
     useEffect(() => {
         dispatch(setupOptions());
         return active ? () => dispatch(triggerStop()) : undefined;
     }, [active, dispatch]);
     return active && <Chart />;
 };
+Scope.propTypes = {
+    active: bool.isRequired,
+};
+
+export default Scope;

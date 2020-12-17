@@ -98,7 +98,6 @@ const ChartContainer = ({
     chartRef,
     cursorData: { begin, end },
     lineData,
-    mappedIndex,
 }) => {
     const dispatch = useDispatch();
     const {
@@ -131,7 +130,7 @@ const ChartContainer = ({
                 borderColor: dataColor,
                 borderWidth: step > 2 ? 1 : 1.5,
                 fill: false,
-                data: lineData.slice(0, mappedIndex),
+                data: lineData,
                 pointRadius: snapping ? pointRadius : 0,
                 pointHoverRadius: snapping ? pointRadius : 0,
                 pointHitRadius: snapping ? pointRadius : 0,
@@ -258,5 +257,4 @@ ChartContainer.propTypes = {
             y: number,
         })
     ),
-    mappedIndex: number.isRequired,
 };
